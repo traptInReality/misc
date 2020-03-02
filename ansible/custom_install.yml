@@ -1,0 +1,24 @@
+---
+- hosts: localhost
+  become: true
+  tasks:
+    - name: Install packages
+      yum:
+        name: epel-release
+    - name: Import Microsoft Key
+      rpm_key:
+        key: https://packages.microsoft.com/keys/microsoft.asc
+        state: present
+    - name: Config VSCode repo
+      yum_repository:
+        name: vscode
+        baseurl: https://packages.microsoft.com/yumrepos/vscode
+        enabled: 1
+        gpgcheck: 1
+        gpgkey: https://packages.microsoft.com/keys/microsoft.asc
+        description: VSCode Repo
+    - name: Install VSCode and pylint
+      yum:
+        name: code, pylint
+        state: present
+        update_cache: yes
